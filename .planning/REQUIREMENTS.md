@@ -95,36 +95,36 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BATTLE-01 | - | Pending |
-| BATTLE-02 | - | Pending |
-| BATTLE-03 | - | Pending |
-| BATTLE-04 | - | Pending |
-| BATTLE-05 | - | Pending |
-| BATTLE-06 | - | Pending |
-| CAT-01 | - | Pending |
-| CAT-02 | - | Pending |
-| CAT-03 | - | Pending |
-| SEASON-01 | - | Pending |
-| SEASON-02 | - | Pending |
-| SEASON-03 | - | Pending |
-| SEASON-04 | - | Pending |
-| AI-01 | - | Pending |
-| AI-02 | - | Pending |
-| AI-03 | - | Pending |
-| AI-04 | - | Pending |
-| SEC-01 | - | Pending |
-| SEC-02 | - | Pending |
-| UI-01 | - | Pending |
-| UI-02 | - | Pending |
-| UI-03 | - | Pending |
-| DATA-01 | - | Pending |
-| DATA-02 | - | Pending |
+| AI-01 | Phase 1 | Pending |
+| AI-02 | Phase 1 | Pending |
+| AI-03 | Phase 1 | Pending |
+| AI-04 | Phase 1 | Pending |
+| SEC-01 | Phase 1 | Pending |
+| SEC-02 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Pending |
+| BATTLE-01 | Phase 2 | Pending |
+| BATTLE-02 | Phase 2 | Pending |
+| BATTLE-03 | Phase 2 | Pending |
+| BATTLE-04 | Phase 2 | Pending |
+| BATTLE-05 | Phase 2 | Pending |
+| BATTLE-06 | Phase 2 | Pending |
+| CAT-01 | Phase 3 | Pending |
+| CAT-02 | Phase 3 | Pending |
+| CAT-03 | Phase 3 | Pending |
+| SEASON-01 | Phase 4 | Pending |
+| SEASON-02 | Phase 4 | Pending |
+| SEASON-03 | Phase 4 | Pending |
+| SEASON-04 | Phase 4 | Pending |
+| DATA-02 | Phase 4 | Pending |
+| UI-01 | Phase 5 | Pending |
+| UI-02 | Phase 5 | Pending |
+| UI-03 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 24 total
-- Mapped to phases: 0
-- Unmapped: 24 ⚠️
+- Mapped to phases: 24
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-08 after initial definition*
+*Last updated: 2026-04-08 after roadmap creation*
