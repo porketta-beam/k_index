@@ -456,22 +456,22 @@ export async function POST(req: Request) {
 
 **If this table is empty:** N/A -- 6 assumptions identified above.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Korean System Prompt Quality Across Providers**
    - What we know: All 3 providers support Korean, and a Korean system prompt should produce Korean responses.
    - What's unclear: Whether the exact same system prompt produces equally natural Korean from GPT-4o-mini, Claude Haiku, and Gemini Flash. Some providers may need provider-specific system prompt tuning.
-   - Recommendation: Start with a single system prompt. Test during implementation. If quality varies significantly, add per-provider system prompt overrides in config.
+   - RESOLVED: Start with a single system prompt. Test during implementation. If quality varies significantly, add per-provider system prompt overrides in config. This is a runtime calibration issue, not a planning blocker.
 
 2. **Supabase Migration Strategy: CLI vs Dashboard**
    - What we know: Supabase CLI supports `supabase migration new` for version-controlled migrations. Dashboard allows visual table creation.
    - What's unclear: Whether Supabase CLI is required for the team's workflow or if Dashboard + exported SQL is acceptable.
-   - Recommendation: Use SQL migration files in `supabase/migrations/` committed to git. Apply via `supabase db push` or Dashboard SQL editor. Supabase CLI install is optional but recommended.
+   - RESOLVED: Use SQL migration files in `supabase/migrations/` committed to git. Apply via `supabase db push` or Dashboard SQL editor. Supabase CLI install is optional but recommended.
 
 3. **Battle ID Format: nanoid vs UUID**
    - What we know: Schema uses UUID (PostgreSQL native). nanoid is shorter for URLs.
    - What's unclear: Whether battle IDs will ever appear in URLs (Phase 2 decision).
-   - Recommendation: Use UUID in database (PostgreSQL-native, indexed efficiently). If URLs need short IDs, add a `short_id` column with nanoid in Phase 2.
+   - RESOLVED: Use UUID in database (PostgreSQL-native, indexed efficiently). If URLs need short IDs, add a `short_id` column with nanoid in Phase 2. nanoid stays in Phase 1 dependencies for future use.
 
 ## Environment Availability
 
