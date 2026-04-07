@@ -21,7 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 ## Phase Details
 
 ### Phase 1: Foundation & AI Integration
-**Goal**: A working backend where any of the 3 AI models can receive a prompt and return a streaming response, with all requests rate-limited and users fingerprinted
+**Goal**: A working backend where any of the 3 AI models can receive a prompt and return a streaming response, with Supabase database schema for battle data storage. Fingerprinting and rate limiting deferred per user decisions (D-01 through D-04).
 **Depends on**: Nothing (first phase)
 **Requirements**: AI-01, AI-02, AI-03, AI-04, SEC-01, SEC-02, DATA-01
 **Success Criteria** (what must be TRUE):
@@ -29,13 +29,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. A test prompt sent to Claude Haiku returns a streaming Korean response via the same provider interface
   3. A test prompt sent to Gemini Flash returns a streaming Korean response via the same provider interface
   4. All AI responses are capped at the configured max_tokens limit (budget control enforced)
-  5. A browser visiting the site is assigned a fingerprint, and repeated rapid requests from the same fingerprint are rate-limited
-**Plans**: TBD
+  5. Battle data (question, responses, vote, model, category, timestamps) can be stored in and retrieved from Supabase
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md — Project scaffold, dependencies, env validation, shared types, Supabase schema & query layer
+- [ ] 01-02-PLAN.md — AI provider registry, battle config, streaming Route Handler, smoke test
+- [ ] 01-03-PLAN.md — Database schema push, end-to-end integration verification
 
 ### Phase 2: Core Battle Loop
 **Goal**: Users can experience a complete blind battle -- type a question, see two anonymous AI responses stream in, vote for the better one, and discover which models they were
@@ -107,7 +107,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & AI Integration | 0/3 | Not started | - |
+| 1. Foundation & AI Integration | 0/3 | Planning complete | - |
 | 2. Core Battle Loop | 0/3 | Not started | - |
 | 3. Category System | 0/1 | Not started | - |
 | 4. Season System & Global State | 0/2 | Not started | - |
