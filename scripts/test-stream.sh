@@ -19,10 +19,10 @@ curl -s -N -X POST "$BASE_URL" \
   --max-time 30
 echo -e "\n"
 
-echo "=== Testing Google Gemini 2.0 Flash ==="
+echo "=== Testing Google Gemini 2.5 Flash ==="
 curl -s -N -X POST "$BASE_URL" \
   -H "Content-Type: application/json" \
-  -d "{\"prompt\": \"$PROMPT\", \"modelId\": \"google:gemini-2.0-flash\"}" \
+  -d "{\"prompt\": \"$PROMPT\", \"modelId\": \"google:gemini-2.5-flash\"}" \
   --max-time 30
 echo -e "\n"
 

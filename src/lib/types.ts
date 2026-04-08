@@ -1,7 +1,7 @@
 export const BUDGET_MODELS = [
   "openai:gpt-4o-mini",
   "anthropic:claude-haiku-4-5",
-  "google:gemini-2.0-flash",
+  "google:gemini-2.5-flash",
 ] as const;
 
 export type BudgetModelId = (typeof BUDGET_MODELS)[number];
