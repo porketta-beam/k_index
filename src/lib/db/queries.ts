@@ -107,6 +107,7 @@ export async function insertBattleWithVote(data: {
   responseB: string;
   winner: "a" | "b";
   category: string;
+  seasonId?: string;
   durationA: number;
   durationB: number;
 }): Promise<{ battle: Battle; vote: Vote }> {
@@ -121,6 +122,7 @@ export async function insertBattleWithVote(data: {
       response_b: data.responseB,
       position_a: data.positionA, // D-03, BATTLE-06: randomized position from session token
       category: data.category,
+      season_id: data.seasonId ?? null,  // Phase 4: season_id from HMAC token
       status: "completed" as BattleStatus,
       completed_at: new Date().toISOString(),
     })
@@ -150,9 +152,11 @@ export async function insertBattleWithVote(data: {
  */
 export async function getModelWinRates(
   category: string,
+  seasonId?: string,
 ): Promise<Array<{ model_id: string; wins: number; total: number }>> {
   const { data, error } = await supabase.rpc("get_model_win_rates", {
     category_filter: category,
+    ...(seasonId ? { season_filter: seasonId } : {}),
   });
 
   if (error) {

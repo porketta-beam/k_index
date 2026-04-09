@@ -2,6 +2,7 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { selectModelPair } from "@/lib/ai/pairing";
 import { createBattleToken } from "@/lib/battle/session";
+import { checkSeasonActive } from "@/lib/season/gate";
 import { CATEGORIES } from "@/lib/categories";
 import type { BattleStartResponse } from "@/lib/types";
 
@@ -24,6 +25,19 @@ const requestSchema = z.object({
 
 export async function POST(req: Request) {
   try {
+    // Season gate -- FIRST check before anything else (D-05, D-07, SEASON-02)
+    const seasonCheck = await checkSeasonActive();
+    if (!seasonCheck.active) {
+      return Response.json(
+        {
+          error: "season_ended",
+          seasonNumber: seasonCheck.seasonNumber,
+          message: `시즌 ${seasonCheck.seasonNumber ?? ""} 배틀이 끝났습니다!`,
+        },
+        { status: 503 },
+      );
+    }
+
     const body = await req.json();
     const { question, category, systemPrompt } = requestSchema.parse(body);
 
@@ -37,7 +51,7 @@ export async function POST(req: Request) {
       pA: positionA, // D-03, BATTLE-06: randomized position stored in token
       cat: category,      // Phase 3: category ID from validated request
       sp: systemPrompt,   // Phase 3: system prompt from validated request
-      sId: "",             // Phase 4: season_id placeholder, wired by season gate in Plan 03
+      sId: seasonCheck.seasonId!,  // Phase 4: season_id from gate (non-null when active)
       ts: Date.now(),
     });
 

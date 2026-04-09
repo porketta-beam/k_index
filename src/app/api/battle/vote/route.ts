@@ -2,6 +2,8 @@ import { z } from "zod";
 import { verifyBattleToken } from "@/lib/battle/session";
 import { MODEL_DISPLAY_NAMES } from "@/lib/ai/config";
 import { insertBattleWithVote, getModelWinRates } from "@/lib/db/queries";
+import { incrementBattleCounter } from "@/lib/season/counter";
+import { getCurrentSeason, endSeasonIfThresholdReached } from "@/lib/season/queries";
 import type { BattleVoteResponse } from "@/lib/types";
 
 const requestSchema = z.object({
@@ -35,12 +37,23 @@ export async function POST(req: Request) {
       responseB,
       winner,
       category,
+      seasonId: session.sId,  // Phase 4: season_id from HMAC token
       durationA,
       durationB,
     });
 
+    // Phase 4: Increment global counter and check auto-end (SEASON-01, SEASON-02, DATA-02)
+    if (session.sId) {
+      const newCount = await incrementBattleCounter(session.sId);
+      // Auto-end season if threshold reached
+      const season = await getCurrentSeason();
+      if (season && newCount >= season.threshold) {
+        await endSeasonIfThresholdReached(season.id, season.threshold);
+      }
+    }
+
     // D-09, D-10, BATTLE-05: Get win rates for revealed models
-    const winRateRows = await getModelWinRates(category);
+    const winRateRows = await getModelWinRates(category, session.sId || undefined);
 
     const modelAWins = winRateRows.find((r) => r.model_id === session.mA);
     const modelBWins = winRateRows.find((r) => r.model_id === session.mB);
