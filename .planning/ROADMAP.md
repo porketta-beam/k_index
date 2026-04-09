@@ -33,9 +33,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project scaffold, dependencies, env validation, shared types, Supabase schema & query layer
-- [ ] 01-02-PLAN.md — AI provider registry, battle config, streaming Route Handler, smoke test
-- [ ] 01-03-PLAN.md — Database schema push, end-to-end integration verification
+- [x] 01-01-PLAN.md — Project scaffold, dependencies, env validation, shared types, Supabase schema & query layer
+- [x] 01-02-PLAN.md — AI provider registry, battle config, streaming Route Handler, smoke test
+- [x] 01-03-PLAN.md — Database schema push, end-to-end integration verification
 
 ### Phase 2: Core Battle Loop
 **Goal**: Users can experience a complete blind battle -- type a question, see two anonymous AI responses stream in, vote for the better one, and discover which models they were
