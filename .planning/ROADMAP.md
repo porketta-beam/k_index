@@ -84,8 +84,8 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 04-01-PLAN.md — Season data foundation: types, env, Redis client, SQL migrations
-- [ ] 04-02-PLAN.md — Season logic modules + admin auth + unit tests
+- [x] 04-01-PLAN.md — Season data foundation: types, env, Redis client, SQL migrations
+- [x] 04-02-PLAN.md — Season logic modules + admin auth + unit tests
 - [ ] 04-03-PLAN.md — API route integration, client UI, DB push, end-to-end verification
 
 ### Phase 5: Korean UI & Responsive Polish
