@@ -9,10 +9,10 @@ export default async function Home({
   const { cat } = await searchParams;
 
   return (
-    <main className="flex-1">
+    <div className="min-h-dvh flex flex-col">
       <Suspense fallback={null}>
         <BattleArena initialCategory={cat} />
       </Suspense>
-    </main>
+    </div>
   );
 }

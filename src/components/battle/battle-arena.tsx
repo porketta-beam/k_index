@@ -6,6 +6,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { useBattleStore } from "@/lib/store/battle-store";
 import { DEFAULT_CATEGORY_ID, getCategoryById } from "@/lib/categories";
+import { cn } from "@/lib/utils";
 import { CategorySelector } from "./category-selector";
 import { SystemPromptEditor } from "./system-prompt-editor";
 import { BattleInput } from "./battle-input";
@@ -13,6 +14,7 @@ import { ResponseCard } from "./response-card";
 import { VotePanel } from "./vote-panel";
 import { RevealPanel } from "./reveal-panel";
 import { SeasonEnded } from "./season-ended";
+import { SwipeContainer } from "./swipe-container";
 import type { BattleStartResponse, BattleVoteResponse } from "@/lib/types";
 
 interface BattleArenaProps {
@@ -66,7 +68,7 @@ export function BattleArena({ initialCategory }: BattleArenaProps) {
     },
     onError: (error) => {
       // D-06: One model error = entire battle error
-      store.setError(error.message || "응답을 생성하는 중 오류가 발생했습니다");
+      store.setError(error.message || "오류가 발생했습니다");
     },
   });
 
@@ -80,7 +82,7 @@ export function BattleArena({ initialCategory }: BattleArenaProps) {
       store.setStreamingB(false);
     },
     onError: (error) => {
-      store.setError(error.message || "응답을 생성하는 중 오류가 발생했습니다");
+      store.setError(error.message || "오류가 발생했습니다");
     },
   });
 
@@ -175,7 +177,7 @@ export function BattleArena({ initialCategory }: BattleArenaProps) {
 
       // D-04, D-11: Reveal models, keep response texts visible
       store.setReveal(revealData);
-      toast.success("투표가 기록되었습니다!");
+      toast.success("투표 완료!");
     } catch {
       toast.error("네트워크 오류가 발생했습니다");
     } finally {
@@ -208,111 +210,157 @@ export function BattleArena({ initialCategory }: BattleArenaProps) {
   // Phase 4: Season-ended state takes over the entire UI (D-06)
   if (store.seasonEnded) {
     return (
-      <div className="w-full max-w-[1120px] mx-auto px-4 py-8">
-        <header className="text-center space-y-1">
-          <h1 className="text-2xl font-bold">K-Index</h1>
-          <p className="text-sm text-muted-foreground">AI 블라인드 배틀</p>
+      <>
+        <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border px-4 py-3">
+          <div className="max-w-[1120px] mx-auto text-center space-y-0.5">
+            <h1 className="text-2xl font-bold">K-Index</h1>
+            <p className="text-sm text-muted-foreground">AI 블라인드 배틀</p>
+          </div>
         </header>
-        <SeasonEnded seasonNumber={store.seasonNumber} />
-      </div>
+        <main className="flex-1 overflow-y-auto px-4">
+          <div className="max-w-[1120px] mx-auto">
+            <SeasonEnded seasonNumber={store.seasonNumber} />
+          </div>
+        </main>
+      </>
     );
   }
 
   return (
-    <div className="w-full max-w-[1120px] mx-auto px-4 py-8 space-y-8">
-      {/* Header */}
-      <header className="text-center space-y-1">
-        <h1 className="text-2xl font-bold">K-Index</h1>
-        <p className="text-sm text-muted-foreground">AI 블라인드 배틀</p>
+    <>
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border px-4 py-3">
+        <div className="max-w-[1120px] mx-auto text-center space-y-0.5">
+          <h1 className="text-2xl font-bold">K-Index</h1>
+          <p className="text-sm text-muted-foreground">AI 블라인드 배틀</p>
+        </div>
       </header>
 
-      {/* Category Selector (Phase 03) */}
-      <CategorySelector disabled={!isIdle} />
+      {/* Scrollable Main Content */}
+      <main className={cn(
+        "flex-1 overflow-y-auto px-4",
+        (isIdle || isStreaming) && "pb-[80px]"
+      )}>
+        <div className="max-w-[1120px] mx-auto py-6 space-y-6">
 
-      {/* System Prompt Editor (Phase 03) -- hidden when not idle */}
-      <SystemPromptEditor disabled={!isIdle} />
+          {/* Idle state: category selector, system prompt editor, empty state hero */}
+          {isIdle && (
+            <>
+              <CategorySelector disabled={false} />
+              <SystemPromptEditor disabled={false} />
+              <div className="text-center py-12 space-y-2">
+                <h2 className="text-xl font-bold">첫 번째 배틀을 시작해보세요!</h2>
+                <p className="text-muted-foreground">
+                  한국어로 질문을 입력하면 두 AI가 경쟁합니다. 더 좋은 답변을 선택해주세요.
+                </p>
+              </div>
+            </>
+          )}
 
-      {/* Battle Input (visible in idle state, disabled during streaming) */}
+          {/* Question display (visible in all non-idle states) */}
+          {!isIdle && question && (
+            <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">질문:</span> {question}
+            </div>
+          )}
+
+          {/* Response cards (streaming through reveal and error) */}
+          {(isStreaming || isVoting || isRevealed || isError) && (
+            <>
+              {/* Mobile: swipe container (< 768px) */}
+              <SwipeContainer
+                slotA={
+                  <ResponseCard
+                    slot="a"
+                    responseText={completionA.completion}
+                    isStreaming={completionA.isLoading}
+                    duration={durationA}
+                    revealedModelName={revealData?.modelA.displayName ?? null}
+                    isWinner={winner === "a"}
+                  />
+                }
+                slotB={
+                  <ResponseCard
+                    slot="b"
+                    responseText={completionB.completion}
+                    isStreaming={completionB.isLoading}
+                    duration={durationB}
+                    revealedModelName={revealData?.modelB.displayName ?? null}
+                    isWinner={winner === "b"}
+                  />
+                }
+              />
+
+              {/* Desktop: side by side grid (>= 768px) */}
+              <div className="hidden md:grid md:grid-cols-2 gap-4">
+                <ResponseCard
+                  slot="a"
+                  responseText={completionA.completion}
+                  isStreaming={completionA.isLoading}
+                  duration={durationA}
+                  revealedModelName={revealData?.modelA.displayName ?? null}
+                  isWinner={winner === "a"}
+                />
+                <ResponseCard
+                  slot="b"
+                  responseText={completionB.completion}
+                  isStreaming={completionB.isLoading}
+                  duration={durationB}
+                  revealedModelName={revealData?.modelB.displayName ?? null}
+                  isWinner={winner === "b"}
+                />
+              </div>
+            </>
+          )}
+
+          {/* Error state */}
+          {isError && (
+            <div className="text-center space-y-4">
+              <p className="text-destructive">
+                {errorMessage || "오류가 발생했습니다"}
+              </p>
+              <button
+                onClick={handleRetry}
+                className="text-primary hover:underline font-medium"
+              >
+                다시 시도
+              </button>
+            </div>
+          )}
+
+          {/* Vote panel (visible during streaming + voting) */}
+          {(isStreaming || isVoting) && !isError && (
+            <VotePanel
+              onVote={handleVote}
+              disabled={isStreaming}
+              loading={winner !== null && !isRevealed}
+              selectedWinner={winner}
+            />
+          )}
+
+          {/* Reveal panel (after vote, instant -- no animation per D-04) */}
+          {isRevealed && revealData && (
+            <RevealPanel
+              revealData={revealData}
+              category={store.category}
+              onNewBattle={handleNewBattle}
+            />
+          )}
+        </div>
+      </main>
+
+      {/* Sticky Bottom Input Footer (visible in idle + streaming only, per UI-SPEC) */}
       {(isIdle || isStreaming) && (
-        <BattleInput
-          onSubmit={handleStartBattle}
-          disabled={isStreaming || store.systemPrompt.length > 500 || store.systemPrompt.length === 0}
-          loading={isStreaming}
-        />
+        <footer className="sticky bottom-0 z-10 border-t border-border bg-background/95 backdrop-blur-sm px-4 py-3">
+          <div className="max-w-[1120px] mx-auto">
+            <BattleInput
+              onSubmit={handleStartBattle}
+              disabled={isStreaming || store.systemPrompt.length > 500 || store.systemPrompt.length === 0}
+              loading={isStreaming}
+            />
+          </div>
+        </footer>
       )}
-
-      {/* Question display (read-only after submission, per D-11) */}
-      {!isIdle && question && (
-        <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">질문:</span> {question}
-        </div>
-      )}
-
-      {/* Response cards (appear during streaming, persist through reveal) */}
-      {(isStreaming || isVoting || isRevealed || isError) && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <ResponseCard
-            slot="a"
-            responseText={completionA.completion}
-            isStreaming={completionA.isLoading}
-            duration={durationA}
-            revealedModelName={revealData?.modelA.displayName ?? null}
-            isWinner={winner === "a"}
-          />
-          <ResponseCard
-            slot="b"
-            responseText={completionB.completion}
-            isStreaming={completionB.isLoading}
-            duration={durationB}
-            revealedModelName={revealData?.modelB.displayName ?? null}
-            isWinner={winner === "b"}
-          />
-        </div>
-      )}
-
-      {/* Error state */}
-      {isError && (
-        <div className="text-center space-y-4">
-          <p className="text-destructive">
-            {errorMessage || "응답을 생성하는 중 오류가 발생했습니다"}
-          </p>
-          <button
-            onClick={handleRetry}
-            className="text-primary hover:underline font-medium"
-          >
-            다시 시도
-          </button>
-        </div>
-      )}
-
-      {/* Vote panel (visible when voting, disabled during streaming) */}
-      {(isStreaming || isVoting) && !isError && (
-        <VotePanel
-          onVote={handleVote}
-          disabled={isStreaming}
-          loading={winner !== null && !isRevealed}
-          selectedWinner={winner}
-        />
-      )}
-
-      {/* Reveal panel (appears after vote) */}
-      {isRevealed && revealData && (
-        <RevealPanel
-          revealData={revealData}
-          category={store.category}
-          onNewBattle={handleNewBattle}
-        />
-      )}
-
-      {/* Empty state for new visitors */}
-      {isIdle && (
-        <div className="text-center py-12 space-y-2">
-          <h2 className="text-xl font-semibold">첫 번째 배틀을 시작해보세요!</h2>
-          <p className="text-muted-foreground">
-            한국어로 질문을 입력하면 두 AI가 경쟁합니다. 더 좋은 답변을 선택해주세요.
-          </p>
-        </div>
-      )}
-    </div>
+    </>
   );
 }
