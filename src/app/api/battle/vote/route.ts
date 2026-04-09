@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     }
 
     // D-07: Save battle + vote to DB in one operation at vote time
-    const category = "general"; // Phase 3 adds category selection
+    const category = session.cat; // Phase 3: read category from signed token
     await insertBattleWithVote({
       question: session.q,
       modelA: session.mA,

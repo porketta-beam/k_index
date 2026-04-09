@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
     const result = streamText({
       model: registry.languageModel(modelId),
-      system: BATTLE_CONFIG.systemPrompt,
+      system: session.sp, // Phase 3: system prompt from signed token, not hardcoded
       prompt,
       maxOutputTokens: BATTLE_CONFIG.maxOutputTokens,
       temperature: BATTLE_CONFIG.temperature,
