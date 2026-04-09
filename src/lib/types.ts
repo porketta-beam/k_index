@@ -83,3 +83,22 @@ export interface BattleVoteResponse {
     modelB: WinRateData;
   };
 }
+
+// Season system types (Phase 4)
+export type SeasonStatus = "active" | "ended";
+
+export interface Season {
+  id: string;
+  season_number: number;
+  status: SeasonStatus;
+  threshold: number;
+  battle_count: number;
+  started_at: string;
+  ended_at: string | null;
+}
+
+export interface SeasonGateResult {
+  active: boolean;
+  seasonId: string | null;
+  seasonNumber: number | null;
+}

@@ -19,6 +19,11 @@ const envSchema = z.object({
     "SUPABASE_SERVICE_ROLE_KEY is required",
   ),
   BATTLE_SESSION_SECRET: z.string().min(32, "BATTLE_SESSION_SECRET must be at least 32 characters"),
+  // Season system (Phase 4)
+  ADMIN_API_KEY: z.string().min(32, "ADMIN_API_KEY must be at least 32 characters"),
+  SEASON_BATTLE_THRESHOLD: z.coerce.number().int().positive("SEASON_BATTLE_THRESHOLD must be a positive integer"),
+  UPSTASH_REDIS_REST_URL: z.string().url("UPSTASH_REDIS_REST_URL must be a valid URL"),
+  UPSTASH_REDIS_REST_TOKEN: z.string().min(1, "UPSTASH_REDIS_REST_TOKEN is required"),
 });
 
 export type Env = z.infer<typeof envSchema>;
