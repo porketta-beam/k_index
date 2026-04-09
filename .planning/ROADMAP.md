@@ -51,10 +51,10 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 02-01-PLAN.md — Server battle infrastructure: types, HMAC session tokens, model pairing, 3 API routes, win rate SQL
-- [ ] 02-02-PLAN.md — Client foundation: shadcn/ui init, Zustand + sonner install, Pretendard font, CSS design system
-- [ ] 02-03-PLAN.md — Zustand battle store + 6 battle UI components (input, response card, vote panel, reveal panel, etc.)
-- [ ] 02-04-PLAN.md — Battle arena orchestrator wiring dual streams + page.tsx + end-to-end verification checkpoint
+- [x] 02-01-PLAN.md — Server battle infrastructure: types, HMAC session tokens, model pairing, 3 API routes, win rate SQL
+- [x] 02-02-PLAN.md — Client foundation: shadcn/ui init, Zustand + sonner install, Pretendard font, CSS design system
+- [x] 02-03-PLAN.md — Zustand battle store + 6 battle UI components (input, response card, vote panel, reveal panel, etc.)
+- [x] 02-04-PLAN.md — Battle arena orchestrator wiring dual streams + page.tsx + end-to-end verification checkpoint
 
 ### Phase 3: Category System
 **Goal**: Users can select a battle category (homework, cover letter, counseling, etc.) that shapes the AI's behavior through system prompts, and can customize those prompts
