@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: 'Pretendard Variable', var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -39,6 +39,15 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
+  /* Custom UI-SPEC theme colors */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-reveal-a: var(--reveal-a);
+  --color-reveal-a-foreground: var(--reveal-a-foreground);
+  --color-reveal-b: var(--reveal-b);
+  --color-reveal-b-foreground: var(--reveal-b-foreground);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -55,8 +64,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.546 0.245 262.881);
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -66,7 +75,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: oklch(0.546 0.245 262.881);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -75,12 +84,23 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-ring: oklch(0.546 0.245 262.881);
+
+  /* Custom UI-SPEC colors */
+  /* success: green-600 (#16a34a) */
+  --success: oklch(0.627 0.194 149.214);
+  --success-foreground: oklch(1 0 0);
+  /* reveal-a: violet-600 (#7c3aed) */
+  --reveal-a: oklch(0.541 0.281 293.009);
+  --reveal-a-foreground: oklch(1 0 0);
+  /* reveal-b: cyan-600 (#0891b2) */
+  --reveal-b: oklch(0.609 0.126 221.723);
+  --reveal-b-foreground: oklch(1 0 0);
 }
 
 .dark {
@@ -90,7 +110,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  --primary: oklch(0.623 0.214 262.881);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -101,7 +121,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: oklch(0.623 0.214 262.881);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -109,12 +129,20 @@
   --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.623 0.214 262.881);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: oklch(0.623 0.214 262.881);
+
+  /* Custom UI-SPEC colors (dark mode) */
+  --success: oklch(0.627 0.194 149.214);
+  --success-foreground: oklch(1 0 0);
+  --reveal-a: oklch(0.638 0.238 293.009);
+  --reveal-a-foreground: oklch(1 0 0);
+  --reveal-b: oklch(0.685 0.126 221.723);
+  --reveal-b-foreground: oklch(1 0 0);
 }
 
 @layer base {
@@ -126,5 +154,10 @@
   }
   html {
     @apply font-sans;
+  }
+
+  /* Korean typography: prevent mid-syllable line breaks (UI-SPEC) */
+  body {
+    word-break: keep-all;
   }
 }
