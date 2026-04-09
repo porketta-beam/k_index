@@ -46,6 +46,8 @@ export interface BattleSession {
   mA: BudgetModelId; // model ID for slot A
   mB: BudgetModelId; // model ID for slot B
   pA: "left" | "right"; // randomized A/B position assignment (D-03, BATTLE-06)
+  cat: string;       // category ID (e.g., "general", "homework") — Phase 3
+  sp: string;        // system prompt text — Phase 3
   ts: number;        // creation timestamp (Date.now())
 }
 

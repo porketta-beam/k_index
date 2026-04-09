@@ -17,6 +17,8 @@ describe("createBattleToken / verifyBattleToken", () => {
     mA: "openai:gpt-4o-mini",
     mB: "anthropic:claude-haiku-4-5",
     pA: "left",
+    cat: "general",
+    sp: "당신은 한국어 AI 어시스턴트입니다.",
     ts: Date.now(),
   };
 
