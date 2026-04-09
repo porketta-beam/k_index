@@ -21,7 +21,7 @@
 ### Active
 
 - [ ] 시즌 시스템: 시즌 종료/셔다운 기능 (남용 시 "시즌1 배틀이 끝났습니다" 메시지)
-- [ ] 한국어 UI 전체 제공
+- [x] 한국어 UI 전체 제공 — Validated in Phase 5: Korean UI & Responsive Polish
 
 ### Out of Scope
 
@@ -75,4 +75,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-09 after Phase 3 completion*
+*Last updated: 2026-04-10 after Phase 5 completion*
