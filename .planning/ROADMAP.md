@@ -68,8 +68,8 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 03-01-PLAN.md — Category data layer, BattleSession type extension, HMAC token with cat/sp, API route updates, unit tests
-- [ ] 03-02-PLAN.md — Zustand store extension, CategorySelector + SystemPromptEditor UI, BattleArena wiring, URL persistence, visual checkpoint
+- [x] 03-01-PLAN.md — Category data layer, BattleSession type extension, HMAC token with cat/sp, API route updates, unit tests
+- [x] 03-02-PLAN.md — Zustand store extension, CategorySelector + SystemPromptEditor UI, BattleArena wiring, URL persistence, visual checkpoint
 
 ### Phase 4: Season System & Global State
 **Goal**: The platform operates on a season model where a global request counter tracks all battles, automatically shuts down when the threshold is reached, and admins can manually control season lifecycle
