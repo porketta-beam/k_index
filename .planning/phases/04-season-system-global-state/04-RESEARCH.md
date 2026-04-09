@@ -558,19 +558,19 @@ if (res.status === 503) {
 | A2 | ~50-100ms latency for Supabase season check at battle start is acceptable | Pitfall 3 | LOW -- could add short Redis cache if too slow, but unlikely for MVP |
 | A3 | A few battles exceeding the threshold (counter race at vote time) is acceptable | Pitfall 1 | LOW -- threshold is a soft limit for cost control, not a hard security boundary |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Initial Season Creation**
+1. **Initial Season Creation** — RESOLVED: Create via admin API call. Gate returns `active: false` gracefully when no season exists, showing the season-end screen. No seed migration needed.
    - What we know: Admin can start/end seasons via API. The system needs at least one active season for battles to work.
    - What's unclear: Should the first season be created via admin API call, or auto-created via a seed migration?
    - Recommendation: Create via admin API call. Include a note in deployment docs. If no active season exists, the gate returns `active: false` and shows the season-end screen (graceful degradation).
 
-2. **Season Number Sequence**
+2. **Season Number Sequence** — RESOLVED: Auto-increment via MAX(season_number) + 1 query in createSeason.
    - What we know: D-06 mentions "시즌 N" in the message.
    - What's unclear: Should season numbers auto-increment or be manually set?
    - Recommendation: Auto-increment. When admin starts a new season, query MAX(season_number) + 1 from the seasons table.
 
-3. **battle_count Denormalization**
+3. **battle_count Denormalization** — RESOLVED: Yes, store battle_count in seasons table. Updated when season ends by copying final Redis counter value.
    - What we know: The Redis counter is the source of truth for the current count.
    - What's unclear: Should we also store battle_count in the `seasons` table for historical reference?
    - Recommendation: Yes -- update `seasons.battle_count` when season ends (copy final Redis value). Useful for analytics without querying Redis history.
