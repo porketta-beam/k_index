@@ -100,8 +100,8 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 05-01-PLAN.md — Zustand store extensions (mobileActiveCard, inputText), useActiveCard hook, SwipeContainer component, scrollbar-hide CSS
-- [ ] 05-02-PLAN.md — Full layout restructure (sticky header/footer, mobile swipe, desktop grid), leaf component updates (copy, animations, responsive), visual checkpoint
+- [x] 05-01-PLAN.md — Zustand store extensions (mobileActiveCard, inputText), useActiveCard hook, SwipeContainer component, scrollbar-hide CSS
+- [x] 05-02-PLAN.md — Full layout restructure (sticky header/footer, mobile swipe, desktop grid), leaf component updates (copy, animations, responsive), visual checkpoint
 
 ## Progress
 
