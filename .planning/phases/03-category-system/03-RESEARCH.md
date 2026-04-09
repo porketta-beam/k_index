@@ -489,17 +489,17 @@ const category = session.cat;  // CHANGED: was hardcoded "general"
 | A2 | Next.js 16 `searchParams` is a Promise in server components (per Next.js 15+ pattern) | Architecture Patterns | Medium -- may need `use()` unwrapping or synchronous access depending on exact version behavior |
 | A3 | 5-item mobile grid works best as 3+2 centered layout | Pitfalls | Low -- purely visual preference, easy to adjust |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Mobile Layout for 5 Categories**
+1. **Mobile Layout for 5 Categories** (RESOLVED)
    - What we know: UI-SPEC designed for 6 (2x3 grid). D-01 removed coding, leaving 5.
    - What's unclear: Best visual layout for 5 items on mobile.
-   - Recommendation: Use 3+2 grid (first row 3 items, second row 2 items centered) for visual balance. If toggle items are small enough, a horizontal scroll row also works. Implementation can decide based on testing.
+   - RESOLVED: Use `flex flex-wrap gap-2` on the ToggleGroup container. On mobile, 5 items naturally wrap into 3+2 rows. Plan 02 Task 2 implements this with `className="flex flex-wrap gap-2"` on the ToggleGroup.
 
-2. **searchParams as Promise in Next.js 16**
+2. **searchParams as Promise in Next.js 16** (RESOLVED)
    - What we know: Next.js 15 changed `searchParams` to a Promise. Next.js 16 likely continues this pattern.
    - What's unclear: Whether page.tsx needs `await searchParams` or if it's synchronous.
-   - Recommendation: Use `await searchParams` in the server component (safe pattern for both 15 and 16). The codebase currently has `page.tsx` as a synchronous function, so this is a minor change.
+   - RESOLVED: Use `await searchParams` in async server component page.tsx. Plan 02 Task 2 implements `export default async function Home({ searchParams }: { searchParams: Promise<{ cat?: string }> })` with `const { cat } = await searchParams;`.
 
 ## Validation Architecture
 

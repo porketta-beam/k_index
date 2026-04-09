@@ -38,20 +38,22 @@ created: 2026-04-09
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 03-01-01 | 01 | 1 | CAT-01 | — | N/A | unit | `npx vitest run` | ❌ W0 | ⬜ pending |
-| 03-01-02 | 01 | 1 | CAT-02 | — | N/A | unit | `npx vitest run` | ❌ W0 | ⬜ pending |
-| 03-01-03 | 01 | 1 | CAT-03 | — | N/A | unit | `npx vitest run` | ❌ W0 | ⬜ pending |
+| 03-01-01 | 01 | 1 | CAT-01, CAT-02 | — | N/A | unit | `npx vitest run src/lib/categories.test.ts` | No — W0 | pending |
+| 03-01-02 | 01 | 1 | CAT-01, CAT-02 | T-03-01 thru T-03-06 | HMAC token roundtrip with cat/sp | unit | `npx vitest run src/lib/battle/session.test.ts` | No — W0 | pending |
+| 03-02-01 | 02 | 2 | CAT-03 | — | Store category guard logic | unit | `npx vitest run src/lib/store/battle-store.test.ts` | No — W0 | pending |
+| 03-02-02 | 02 | 2 | CAT-01, CAT-02, CAT-03 | T-03-07 thru T-03-10 | N/A | type-check | `npx tsc --noEmit` | N/A | pending |
+| 03-02-03 | 02 | 2 | CAT-01, CAT-02, CAT-03 | — | N/A | manual | Visual inspection (checkpoint) | N/A | pending |
 
-*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
+*Status: pending / green / red / flaky*
 
 ---
 
 ## Wave 0 Requirements
 
 - [ ] Test framework setup (vitest) — if not already installed
-- [ ] Test stubs for category data structure validation (CAT-01)
-- [ ] Test stubs for system prompt application (CAT-02)
-- [ ] Test stubs for prompt customization (CAT-03)
+- [ ] `src/lib/categories.test.ts` — covers CAT-01, CAT-02 (category definitions, lookup functions)
+- [ ] `src/lib/battle/session.test.ts` — covers CAT-01/CAT-02 (token extension with cat+sp fields)
+- [ ] `src/lib/store/battle-store.test.ts` — covers CAT-03 (category state, prompt editing, pending switch, reset D-05)
 
 *If none: "Existing infrastructure covers all phase requirements."*
 
