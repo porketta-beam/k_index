@@ -113,5 +113,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Foundation & AI Integration | 0/3 | Planning complete | - |
 | 2. Core Battle Loop | 0/4 | Planning complete | - |
 | 3. Category System | 0/2 | Planning complete | - |
-| 4. Season System & Global State | 0/2 | Not started | - |
+| 4. Season System & Global State | 0/3 | Planning complete | - |
 | 5. Korean UI & Responsive Polish | 0/2 | Not started | - |
