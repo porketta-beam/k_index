@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import type { BattleVoteResponse } from "@/lib/types";
+import { DEFAULT_CATEGORY_ID, getDefaultPrompt } from "@/lib/categories";
 
 /**
  * Battle phase state machine (UI-SPEC):
@@ -26,6 +27,11 @@ interface BattleState {
   winner: "a" | "b" | null;
   revealData: BattleVoteResponse | null;
   errorMessage: string | null;
+  // Category state (Phase 03)
+  category: string;
+  systemPrompt: string;
+  isPromptModified: boolean;
+  pendingCategory: string | null;
 
   // Actions
   startBattle: (question: string, token: string) => void;
@@ -37,6 +43,12 @@ interface BattleState {
   setReveal: (data: BattleVoteResponse) => void;
   setError: (message: string) => void;
   reset: () => void;
+  // Category actions (Phase 03)
+  setCategory: (categoryId: string) => void;
+  confirmCategorySwitch: () => void;
+  cancelCategorySwitch: () => void;
+  setSystemPrompt: (prompt: string) => void;
+  resetPrompt: () => void;
 }
 
 const initialState = {
@@ -50,6 +62,11 @@ const initialState = {
   winner: null as "a" | "b" | null,
   revealData: null as BattleVoteResponse | null,
   errorMessage: null as string | null,
+  // Category state (Phase 03)
+  category: DEFAULT_CATEGORY_ID,
+  systemPrompt: getDefaultPrompt(DEFAULT_CATEGORY_ID),
+  isPromptModified: false,
+  pendingCategory: null as string | null,
 };
 
 export const useBattleStore = create<BattleState>((set, get) => ({
@@ -110,5 +127,61 @@ export const useBattleStore = create<BattleState>((set, get) => ({
     }),
 
   // D-12: "New battle" button resets state to idle immediately
-  reset: () => set(initialState),
+  // D-05: Preserve category but reset prompt to category default
+  reset: () => {
+    const { category } = get();
+    set({
+      ...initialState,
+      category,
+      systemPrompt: getDefaultPrompt(category),
+    });
+  },
+
+  // -- Category actions (Phase 03) --
+
+  setCategory: (categoryId: string) => {
+    const { isPromptModified } = get();
+    if (isPromptModified) {
+      // UI-SPEC: warn before switching when prompt modified
+      set({ pendingCategory: categoryId });
+    } else {
+      set({
+        category: categoryId,
+        systemPrompt: getDefaultPrompt(categoryId),
+        isPromptModified: false,
+        pendingCategory: null,
+      });
+    }
+  },
+
+  confirmCategorySwitch: () => {
+    const { pendingCategory } = get();
+    if (pendingCategory) {
+      set({
+        category: pendingCategory,
+        systemPrompt: getDefaultPrompt(pendingCategory),
+        isPromptModified: false,
+        pendingCategory: null,
+      });
+    }
+  },
+
+  cancelCategorySwitch: () => set({ pendingCategory: null }),
+
+  setSystemPrompt: (prompt: string) => {
+    const { category } = get();
+    const defaultPrompt = getDefaultPrompt(category);
+    set({
+      systemPrompt: prompt,
+      isPromptModified: prompt !== defaultPrompt,
+    });
+  },
+
+  resetPrompt: () => {
+    const { category } = get();
+    set({
+      systemPrompt: getDefaultPrompt(category),
+      isPromptModified: false,
+    });
+  },
 }));
