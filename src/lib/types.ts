@@ -38,3 +38,46 @@ export interface StreamRequest {
   prompt: string;
   modelId: BudgetModelId;
 }
+
+// NEW: Battle session payload stored in HMAC token
+export interface BattleSession {
+  sid: string;       // nanoid session ID
+  q: string;         // question text
+  mA: BudgetModelId; // model ID for slot A
+  mB: BudgetModelId; // model ID for slot B
+  pA: "left" | "right"; // randomized A/B position assignment (D-03, BATTLE-06)
+  ts: number;        // creation timestamp (Date.now())
+}
+
+// NEW: API response types
+export interface BattleStartResponse {
+  token: string; // HMAC-signed opaque token
+}
+
+export interface BattleVoteRequest {
+  token: string;
+  winner: "a" | "b";
+  responseA: string;
+  responseB: string;
+  durationA: number; // seconds, 1 decimal per D-05
+  durationB: number;
+}
+
+export interface ModelReveal {
+  id: BudgetModelId;
+  displayName: string;
+}
+
+export interface WinRateData {
+  wins: number;
+  total: number;
+}
+
+export interface BattleVoteResponse {
+  modelA: ModelReveal;
+  modelB: ModelReveal;
+  winRates: {
+    modelA: WinRateData;
+    modelB: WinRateData;
+  };
+}

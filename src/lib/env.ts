@@ -18,6 +18,7 @@ const envSchema = z.object({
     1,
     "SUPABASE_SERVICE_ROLE_KEY is required",
   ),
+  BATTLE_SESSION_SECRET: z.string().min(32, "BATTLE_SESSION_SECRET must be at least 32 characters"),
 });
 
 export type Env = z.infer<typeof envSchema>;

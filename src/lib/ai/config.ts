@@ -12,3 +12,9 @@ export const BATTLE_CONFIG = {
   systemPrompt:
     "당신은 한국어 AI 어시스턴트입니다. 사용자의 질문에 자연스러운 한국어로 답변하세요. 존댓말을 사용하고, 명확하고 유용한 답변을 제공하세요.",
 } as const;
+
+export const MODEL_DISPLAY_NAMES: Record<string, string> = {
+  "openai:gpt-4o-mini": "GPT-4o-mini",
+  "anthropic:claude-haiku-4-5": "Claude Haiku 4.5",
+  "google:gemini-2.5-flash": "Gemini 2.5 Flash",
+};
