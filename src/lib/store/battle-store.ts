@@ -32,6 +32,9 @@ interface BattleState {
   systemPrompt: string;
   isPromptModified: boolean;
   pendingCategory: string | null;
+  // Season state (Phase 04)
+  seasonEnded: boolean;
+  seasonNumber: number | null;
 
   // Actions
   startBattle: (question: string, token: string) => void;
@@ -49,6 +52,8 @@ interface BattleState {
   cancelCategorySwitch: () => void;
   setSystemPrompt: (prompt: string) => void;
   resetPrompt: () => void;
+  // Season actions (Phase 04)
+  setSeasonEnded: (seasonNumber: number | null) => void;
 }
 
 const initialState = {
@@ -67,6 +72,9 @@ const initialState = {
   systemPrompt: getDefaultPrompt(DEFAULT_CATEGORY_ID),
   isPromptModified: false,
   pendingCategory: null as string | null,
+  // Season state (Phase 04)
+  seasonEnded: false,
+  seasonNumber: null as number | null,
 };
 
 export const useBattleStore = create<BattleState>((set, get) => ({
@@ -129,11 +137,13 @@ export const useBattleStore = create<BattleState>((set, get) => ({
   // D-12: "New battle" button resets state to idle immediately
   // D-05: Preserve category but reset prompt to category default
   reset: () => {
-    const { category } = get();
+    const { category, seasonEnded, seasonNumber } = get();
     set({
       ...initialState,
       category,
       systemPrompt: getDefaultPrompt(category),
+      seasonEnded,      // Phase 4: preserve season-ended across battle resets
+      seasonNumber,     // Phase 4: preserve season number across battle resets
     });
   },
 
@@ -184,4 +194,9 @@ export const useBattleStore = create<BattleState>((set, get) => ({
       isPromptModified: false,
     });
   },
+
+  // -- Season actions (Phase 04) --
+
+  setSeasonEnded: (seasonNumber: number | null) =>
+    set({ seasonEnded: true, seasonNumber }),
 }));

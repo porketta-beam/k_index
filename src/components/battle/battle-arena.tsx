@@ -12,6 +12,7 @@ import { BattleInput } from "./battle-input";
 import { ResponseCard } from "./response-card";
 import { VotePanel } from "./vote-panel";
 import { RevealPanel } from "./reveal-panel";
+import { SeasonEnded } from "./season-ended";
 import type { BattleStartResponse, BattleVoteResponse } from "@/lib/types";
 
 interface BattleArenaProps {
@@ -104,6 +105,15 @@ export function BattleArena({ initialCategory }: BattleArenaProps) {
         }),
       });
 
+      // Phase 4: Season-ended detection (D-05, SEASON-03)
+      if (res.status === 503) {
+        const data = await res.json().catch(() => ({}));
+        if (data.error === "season_ended") {
+          store.setSeasonEnded(data.seasonNumber ?? null);
+          return;  // Do not fall through to error handling
+        }
+      }
+
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: "서버 오류" }));
         store.setError(err.error || "배틀을 시작할 수 없습니다");
@@ -194,6 +204,19 @@ export function BattleArena({ initialCategory }: BattleArenaProps) {
   const isRevealed = phase === "reveal";
   const isError = phase === "error";
   const isIdle = phase === "idle";
+
+  // Phase 4: Season-ended state takes over the entire UI (D-06)
+  if (store.seasonEnded) {
+    return (
+      <div className="w-full max-w-[1120px] mx-auto px-4 py-8">
+        <header className="text-center space-y-1">
+          <h1 className="text-2xl font-bold">K-Index</h1>
+          <p className="text-sm text-muted-foreground">AI 블라인드 배틀</p>
+        </header>
+        <SeasonEnded seasonNumber={store.seasonNumber} />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-[1120px] mx-auto px-4 py-8 space-y-8">
