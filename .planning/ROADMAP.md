@@ -86,7 +86,7 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md — Season data foundation: types, env, Redis client, SQL migrations
 - [x] 04-02-PLAN.md — Season logic modules + admin auth + unit tests
-- [ ] 04-03-PLAN.md — API route integration, client UI, DB push, end-to-end verification
+- [x] 04-03-PLAN.md — API route integration, client UI, DB push, end-to-end verification
 
 ### Phase 5: Korean UI & Responsive Polish
 **Goal**: The entire interface is naturally Korean-first, works flawlessly on mobile/tablet/desktop, and the end-to-end battle flow feels smooth and intuitive
