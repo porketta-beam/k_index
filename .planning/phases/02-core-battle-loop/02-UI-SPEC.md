@@ -86,13 +86,13 @@ Exceptions: Vote buttons use minimum 44px touch target height (accessibility).
 | Role | Size | Weight | Line Height | Font Stack | Usage |
 |------|------|--------|-------------|------------|-------|
 | Body | 16px | 400 (regular) | 1.6 | Pretendard Variable | AI response text, question text |
-| Label | 14px | 500 (medium) | 1.4 | Pretendard Variable | "Model A", "Model B" labels, status text, metadata |
+| Label | 14px | 400 (regular) | 1.4 | Pretendard Variable | "Model A", "Model B" labels, status text, metadata |
 | Heading | 24px | 700 (bold) | 1.3 | Pretendard Variable | Page title, result heading |
 | Mono | 14px | 400 (regular) | 1.5 | Geist Mono | Win rate percentages, counters |
 
 Notes:
 - Body at 16px with 1.6 line-height optimized for Korean paragraph readability (hangul has denser vertical strokes than Latin)
-- Only 2 font weights used in Phase 02: 400 (regular) for body/labels, 700 (bold) for headings. 500 (medium) is used sparingly for emphasis labels only.
+- Only 2 font weights used in Phase 02: 400 (regular) for body/labels, 700 (bold) for headings.
 - Korean text rendering: `word-break: keep-all` on all body text containers to prevent mid-syllable line breaks
 
 ---
@@ -215,6 +215,7 @@ Model reveal colors (violet-600 and cyan-600) reserved for:
 ### Per-State Visual Contract
 
 #### 1. Idle State (initial / after "새 배틀")
+- **Focal point:** BattleInput textarea and blue-600 "배틀 시작" CTA are the primary visual anchor — all other elements are hidden
 - BattleInput visible with focus ring
 - Response area hidden (not empty cards -- literally not rendered)
 - Vote panel hidden
