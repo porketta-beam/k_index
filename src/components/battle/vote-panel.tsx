@@ -13,13 +13,13 @@ interface VotePanelProps {
 export function VotePanel({ onVote, disabled, loading, selectedWinner }: VotePanelProps) {
   return (
     <div className="text-center space-y-4">
-      <h2 className="text-lg font-semibold">어떤 응답이 더 좋았나요?</h2>
+      <h2 className="text-xl font-bold">어떤 응답이 더 좋았나요?</h2>
       <div className="flex justify-center gap-4">
         <Button
           variant={selectedWinner === "a" ? "default" : "outline"}
           size="lg"
           className={cn(
-            "min-w-[120px] min-h-[44px] transition-all duration-150",
+            "min-w-[140px] min-h-[44px] transition-all duration-150",
             selectedWinner === "b" && "opacity-50",
           )}
           onClick={() => onVote("a")}
@@ -30,7 +30,7 @@ export function VotePanel({ onVote, disabled, loading, selectedWinner }: VotePan
           {loading && selectedWinner === "a" ? (
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (
-            "A 승리"
+            "A가 더 좋아"
           )}
         </Button>
 
@@ -38,7 +38,7 @@ export function VotePanel({ onVote, disabled, loading, selectedWinner }: VotePan
           variant={selectedWinner === "b" ? "default" : "outline"}
           size="lg"
           className={cn(
-            "min-w-[120px] min-h-[44px] transition-all duration-150",
+            "min-w-[140px] min-h-[44px] transition-all duration-150",
             selectedWinner === "a" && "opacity-50",
           )}
           onClick={() => onVote("b")}
@@ -49,7 +49,7 @@ export function VotePanel({ onVote, disabled, loading, selectedWinner }: VotePan
           {loading && selectedWinner === "b" ? (
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (
-            "B 승리"
+            "B가 더 좋아"
           )}
         </Button>
       </div>

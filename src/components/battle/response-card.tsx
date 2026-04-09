@@ -30,7 +30,7 @@ export function ResponseCard({
   return (
     <Card
       className={cn(
-        "flex flex-col transition-all duration-300",
+        "flex flex-col",
         isWinner && "border-l-4 border-l-success",
         isRevealed && slot === "a" && "border-t-2 border-t-reveal-a",
         isRevealed && slot === "b" && "border-t-2 border-t-reveal-b",
@@ -72,7 +72,7 @@ export function ResponseCard({
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1">
+      <CardContent className="flex-1 overflow-y-auto max-h-[50vh] md:max-h-[60vh]">
         {responseText.length > 0 ? (
           <div
             className="text-base leading-[1.6] whitespace-pre-wrap"
@@ -80,12 +80,6 @@ export function ResponseCard({
           >
             {responseText}
             {isStreaming && <StreamingIndicator className="ml-1 align-middle" />}
-          </div>
-        ) : isStreaming ? (
-          <div className="space-y-2">
-            <div className="h-4 bg-muted rounded animate-pulse w-3/4" />
-            <div className="h-4 bg-muted rounded animate-pulse w-1/2" />
-            <div className="h-4 bg-muted rounded animate-pulse w-5/6" />
           </div>
         ) : null}
       </CardContent>

@@ -28,13 +28,13 @@ export function CategorySelector({ disabled }: CategorySelectorProps) {
           }
         }}
         disabled={disabled}
-        className="flex flex-wrap gap-2"
+        className="flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide md:flex-wrap md:overflow-x-visible"
       >
         {CATEGORIES.map((cat) => (
           <ToggleGroupItem
             key={cat.id}
             value={cat.id}
-            className="min-h-[44px] px-4 transition-colors duration-200 ease-out data-[pressed]:bg-primary data-[pressed]:text-primary-foreground data-[pressed]:font-bold data-[pressed]:border-primary border"
+            className="flex-shrink-0 min-h-[44px] px-4 transition-colors duration-200 ease-out data-[pressed]:bg-primary data-[pressed]:text-primary-foreground data-[pressed]:font-bold data-[pressed]:border-primary border"
           >
             {cat.emoji} {cat.label}
           </ToggleGroupItem>

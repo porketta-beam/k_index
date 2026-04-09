@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useBattleStore } from "@/lib/store/battle-store";
 
 const MAX_CHARS = 2000;
 
@@ -14,7 +14,7 @@ interface BattleInputProps {
 }
 
 export function BattleInput({ onSubmit, disabled, loading }: BattleInputProps) {
-  const [question, setQuestion] = useState("");
+  const { inputText: question, setInputText: setQuestion } = useBattleStore();
 
   const charCount = question.length;
   const isEmpty = question.trim().length === 0;
@@ -34,8 +34,8 @@ export function BattleInput({ onSubmit, disabled, loading }: BattleInputProps) {
   };
 
   return (
-    <div className="w-full space-y-3">
-      <div className="relative">
+    <div className="w-full flex flex-col md:flex-row gap-3">
+      <div className="relative flex-1">
         <Textarea
           placeholder="한국어로 질문을 입력하세요"
           value={question}
@@ -43,7 +43,7 @@ export function BattleInput({ onSubmit, disabled, loading }: BattleInputProps) {
           onKeyDown={handleKeyDown}
           disabled={disabled}
           className={cn(
-            "min-h-[120px] resize-none text-base leading-[1.6]",
+            "min-h-[44px] md:min-h-[56px] max-h-[100px] md:max-h-[120px] resize-none text-base leading-[1.6]",
             isTooLong && "border-destructive focus-visible:ring-destructive",
           )}
           aria-label="배틀 질문 입력"
@@ -61,7 +61,7 @@ export function BattleInput({ onSubmit, disabled, loading }: BattleInputProps) {
       <Button
         onClick={handleSubmit}
         disabled={disabled || isEmpty || isTooLong}
-        className="w-full sm:w-auto"
+        className="w-full md:w-auto"
         size="lg"
       >
         {loading ? (
@@ -70,7 +70,7 @@ export function BattleInput({ onSubmit, disabled, loading }: BattleInputProps) {
             응답 생성 중...
           </span>
         ) : (
-          "배틀 시작"
+          "배틀 시작!"
         )}
       </Button>
     </div>
