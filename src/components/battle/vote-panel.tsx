@@ -13,7 +13,7 @@ interface VotePanelProps {
 export function VotePanel({ onVote, disabled, loading, selectedWinner }: VotePanelProps) {
   return (
     <div className="text-center space-y-4">
-      <h2 className="text-xl font-bold">어떤 응답이 더 좋았나요?</h2>
+      <h2 className="text-xl font-bold">선호하는 응답을 선택하세요</h2>
       <div className="flex justify-center gap-4">
         <Button
           variant={selectedWinner === "a" ? "default" : "outline"}
@@ -30,7 +30,7 @@ export function VotePanel({ onVote, disabled, loading, selectedWinner }: VotePan
           {loading && selectedWinner === "a" ? (
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (
-            "A가 더 좋아"
+            "A 선택"
           )}
         </Button>
 
@@ -49,7 +49,7 @@ export function VotePanel({ onVote, disabled, loading, selectedWinner }: VotePan
           {loading && selectedWinner === "b" ? (
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (
-            "B가 더 좋아"
+            "B 선택"
           )}
         </Button>
       </div>

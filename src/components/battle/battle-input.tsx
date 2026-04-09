@@ -70,7 +70,7 @@ export function BattleInput({ onSubmit, disabled, loading }: BattleInputProps) {
             응답 생성 중...
           </span>
         ) : (
-          "배틀 시작!"
+          "배틀 시작"
         )}
       </Button>
     </div>

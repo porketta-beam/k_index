@@ -177,7 +177,7 @@ export function BattleArena({ initialCategory }: BattleArenaProps) {
 
       // D-04, D-11: Reveal models, keep response texts visible
       store.setReveal(revealData);
-      toast.success("투표 완료!");
+      toast.success("투표가 기록되었습니다");
     } catch {
       toast.error("네트워크 오류가 발생했습니다");
     } finally {
@@ -249,9 +249,9 @@ export function BattleArena({ initialCategory }: BattleArenaProps) {
               <CategorySelector disabled={false} />
               <SystemPromptEditor disabled={false} />
               <div className="text-center py-12 space-y-2">
-                <h2 className="text-xl font-bold">첫 번째 배틀을 시작해보세요!</h2>
+                <h2 className="text-xl font-bold">질문을 입력하여 배틀을 시작하세요</h2>
                 <p className="text-muted-foreground">
-                  한국어로 질문을 입력하면 두 AI가 경쟁합니다. 더 좋은 답변을 선택해주세요.
+                  한국어로 질문을 입력하면 두 AI 모델이 응답합니다. 더 우수한 답변을 선택하세요.
                 </p>
               </div>
             </>
