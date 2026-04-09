@@ -96,12 +96,12 @@ Plans:
   1. All interface text is Korean-first, with English mixed in only where natural (e.g., model names, technical terms)
   2. The battle page renders correctly and is fully usable on mobile (375px), tablet (768px), and desktop (1280px+)
   3. The complete flow -- category selection, prompt input, streaming responses, voting, result reveal -- feels like one continuous experience with no jarring transitions
-**Plans**: TBD
+**Plans:** 2 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md — Zustand store extensions (mobileActiveCard, inputText), useActiveCard hook, SwipeContainer component, scrollbar-hide CSS
+- [ ] 05-02-PLAN.md — Full layout restructure (sticky header/footer, mobile swipe, desktop grid), leaf component updates (copy, animations, responsive), visual checkpoint
 
 ## Progress
 
@@ -114,4 +114,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Core Battle Loop | 0/4 | Planning complete | - |
 | 3. Category System | 0/2 | Planning complete | - |
 | 4. Season System & Global State | 0/3 | Planning complete | - |
-| 5. Korean UI & Responsive Polish | 0/2 | Not started | - |
+| 5. Korean UI & Responsive Polish | 0/2 | Planning complete | - |
