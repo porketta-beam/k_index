@@ -13,8 +13,6 @@ export type BattleStatus =
   | "completed"
   | "error";
 
-export type SeasonStatus = "active" | "ended";
-
 export interface Battle {
   id: string;
   question: string;
@@ -24,7 +22,6 @@ export interface Battle {
   response_b: string | null;
   position_a: "left" | "right";
   category: string;
-  season_id: string | null;
   status: BattleStatus;
   created_at: string;
   completed_at: string | null;
@@ -35,22 +32,6 @@ export interface Vote {
   battle_id: string;
   winner: "a" | "b";
   created_at: string;
-}
-
-export interface Season {
-  id: string;
-  season_number: number;
-  status: SeasonStatus;
-  threshold: number;
-  battle_count: number;
-  started_at: string;
-  ended_at: string | null;
-}
-
-export interface SeasonGateResult {
-  active: boolean;
-  seasonId: string | null;
-  seasonNumber: number | null;
 }
 
 export interface StreamRequest {
@@ -67,7 +48,6 @@ export interface BattleSession {
   pA: "left" | "right"; // randomized A/B position assignment (D-03, BATTLE-06)
   cat: string;       // category ID (e.g., "general", "homework") — Phase 3
   sp: string;        // system prompt text — Phase 3
-  sId: string;       // Phase 4: season_id threaded from gate to vote
   ts: number;        // creation timestamp (Date.now())
 }
 

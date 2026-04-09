@@ -19,7 +19,6 @@ describe("createBattleToken / verifyBattleToken", () => {
     pA: "left",
     cat: "general",
     sp: "당신은 한국어 AI 어시스턴트입니다.",
-    sId: "",
     ts: Date.now(),
   };
 
@@ -66,7 +65,6 @@ describe("HMAC battle token with category fields", () => {
       pA: "right",
       cat: "homework",
       sp: "test prompt for homework category",
-      sId: "",
       ts: Date.now(),
     };
     const token = createBattleToken(session);
@@ -86,7 +84,6 @@ describe("HMAC battle token with category fields", () => {
       pA: "left",
       cat: "general",
       sp: longKoreanPrompt,
-      sId: "",
       ts: Date.now(),
     };
     const token = createBattleToken(session);
@@ -105,7 +102,6 @@ describe("HMAC battle token with category fields", () => {
       pA: "left",
       cat: "creative",
       sp: "창의적 프롬프트",
-      sId: "",
       ts: Date.now(),
     };
     const token = createBattleToken(session);
@@ -124,7 +120,6 @@ describe("HMAC battle token with category fields", () => {
       pA: "right",
       cat: "counseling",
       sp: "상담 프롬프트",
-      sId: "",
       ts: Date.now() - 31 * 60 * 1000,
     };
     const token = createBattleToken(session);
@@ -140,7 +135,6 @@ describe("HMAC battle token with category fields", () => {
       pA: "left",
       cat: "cover-letter",
       sp: "자소서 프롬프트",
-      sId: "",
       ts: Date.now(),
     };
     const token = createBattleToken(session);
