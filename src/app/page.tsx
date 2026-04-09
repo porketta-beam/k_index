@@ -1,8 +1,9 @@
+import { BattleArena } from "@/components/battle/battle-arena";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-bold">K-Index</h1>
-      <p className="text-gray-500">AI Battle Arena - Coming Soon</p>
+    <main className="flex-1">
+      <BattleArena />
     </main>
   );
 }
