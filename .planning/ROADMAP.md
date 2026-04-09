@@ -80,12 +80,13 @@ Plans:
   2. When the global counter reaches the configured threshold, new battles are blocked and a "Season N battle is over" message appears
   3. An admin can manually start a new season or end the current season early
   4. During an ended season, users see the season-end message instead of the battle interface
-**Plans**: TBD
+**Plans:** 3 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md — Season data foundation: types, env, Redis client, SQL migrations
+- [ ] 04-02-PLAN.md — Season logic modules + admin auth + unit tests
+- [ ] 04-03-PLAN.md — API route integration, client UI, DB push, end-to-end verification
 
 ### Phase 5: Korean UI & Responsive Polish
 **Goal**: The entire interface is naturally Korean-first, works flawlessly on mobile/tablet/desktop, and the end-to-end battle flow feels smooth and intuitive
