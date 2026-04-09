@@ -169,3 +169,77 @@ describe("battle-store category state", () => {
     });
   });
 });
+
+describe("battle-store phase 05 mobile state", () => {
+  beforeEach(() => {
+    useBattleStore.setState(useBattleStore.getInitialState());
+  });
+
+  test("initial mobileActiveCard is 0", () => {
+    const state = useBattleStore.getState();
+    expect(state.mobileActiveCard).toBe(0);
+  });
+
+  test("initial inputText is empty string", () => {
+    const state = useBattleStore.getState();
+    expect(state.inputText).toBe("");
+  });
+
+  test("setMobileActiveCard(1) sets mobileActiveCard to 1", () => {
+    useBattleStore.getState().setMobileActiveCard(1);
+    const state = useBattleStore.getState();
+    expect(state.mobileActiveCard).toBe(1);
+  });
+
+  test("setMobileActiveCard(0) sets mobileActiveCard to 0", () => {
+    useBattleStore.getState().setMobileActiveCard(1);
+    useBattleStore.getState().setMobileActiveCard(0);
+    const state = useBattleStore.getState();
+    expect(state.mobileActiveCard).toBe(0);
+  });
+
+  test("setInputText('hello') sets inputText to 'hello'", () => {
+    useBattleStore.getState().setInputText("hello");
+    const state = useBattleStore.getState();
+    expect(state.inputText).toBe("hello");
+  });
+
+  test("setInputText('') sets inputText to empty string", () => {
+    useBattleStore.getState().setInputText("hello");
+    useBattleStore.getState().setInputText("");
+    const state = useBattleStore.getState();
+    expect(state.inputText).toBe("");
+  });
+
+  test("reset() clears mobileActiveCard to 0", () => {
+    useBattleStore.getState().setMobileActiveCard(1);
+    useBattleStore.getState().reset();
+    const state = useBattleStore.getState();
+    expect(state.mobileActiveCard).toBe(0);
+  });
+
+  test("reset() clears inputText to empty string", () => {
+    useBattleStore.getState().setInputText("some question text");
+    useBattleStore.getState().reset();
+    const state = useBattleStore.getState();
+    expect(state.inputText).toBe("");
+  });
+
+  test("reset() preserves category (existing behavior still works)", () => {
+    useBattleStore.getState().setCategory("homework");
+    useBattleStore.getState().setInputText("test");
+    useBattleStore.getState().setMobileActiveCard(1);
+    useBattleStore.getState().reset();
+    const state = useBattleStore.getState();
+    expect(state.category).toBe("homework");
+    expect(state.inputText).toBe("");
+    expect(state.mobileActiveCard).toBe(0);
+  });
+
+  test("startBattle clears inputText to empty string", () => {
+    useBattleStore.getState().setInputText("my question");
+    useBattleStore.getState().startBattle("my question", "token-123");
+    const state = useBattleStore.getState();
+    expect(state.inputText).toBe("");
+  });
+});
