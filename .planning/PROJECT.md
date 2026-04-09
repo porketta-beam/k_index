@@ -14,12 +14,12 @@
 
 - [x] GPT, Claude, Gemini 3개 모델 지원 — Validated in Phase 1: Foundation & AI Integration
 - [x] API 기반 AI 모델 호출 — Validated in Phase 1: Foundation & AI Integration
+- [x] 블라인드 배틀: 질문 입력 → 두 AI 익명 응답 → 투표 → 모델 공개 — Validated in Phase 2: Core Battle Loop
+- [x] 로그인 없이 바로 배틀 가능 — Validated in Phase 2: Core Battle Loop
 
 ### Active
 
-- [ ] 블라인드 배틀: 질문 입력 → 두 AI 익명 응답 → 투표 → 모델 공개
 - [ ] 시즌 시스템: 시즌 종료/셔다운 기능 (남용 시 "시즌1 배틀이 끝났습니다" 메시지)
-- [ ] 로그인 없이 바로 배틀 가능
 - [ ] 한국어 UI 전체 제공
 
 ### Out of Scope
@@ -74,4 +74,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 after Phase 1 completion*
+*Last updated: 2026-04-09 after Phase 2 completion*
