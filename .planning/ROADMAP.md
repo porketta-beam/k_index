@@ -64,11 +64,12 @@ Plans:
   1. User can choose from preset categories (e.g., homework, cover letter, counseling) before starting a battle
   2. Each category applies a distinct default system prompt that produces noticeably different AI behavior
   3. User can view and edit the system prompt for any category before submitting their question
-**Plans**: TBD
+**Plans:** 2 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 03-01: TBD
+- [ ] 03-01-PLAN.md — Category data layer, BattleSession type extension, HMAC token with cat/sp, API route updates, unit tests
+- [ ] 03-02-PLAN.md — Zustand store extension, CategorySelector + SystemPromptEditor UI, BattleArena wiring, URL persistence, visual checkpoint
 
 ### Phase 4: Season System & Global State
 **Goal**: The platform operates on a season model where a global request counter tracks all battles, automatically shuts down when the threshold is reached, and admins can manually control season lifecycle
@@ -110,6 +111,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Foundation & AI Integration | 0/3 | Planning complete | - |
 | 2. Core Battle Loop | 0/4 | Planning complete | - |
-| 3. Category System | 0/1 | Not started | - |
+| 3. Category System | 0/2 | Planning complete | - |
 | 4. Season System & Global State | 0/2 | Not started | - |
 | 5. Korean UI & Responsive Polish | 0/2 | Not started | - |
