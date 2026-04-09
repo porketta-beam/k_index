@@ -2,18 +2,54 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { useCompletion } from "@ai-sdk/react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { useBattleStore } from "@/lib/store/battle-store";
+import { DEFAULT_CATEGORY_ID, getCategoryById } from "@/lib/categories";
+import { CategorySelector } from "./category-selector";
+import { SystemPromptEditor } from "./system-prompt-editor";
 import { BattleInput } from "./battle-input";
 import { ResponseCard } from "./response-card";
 import { VotePanel } from "./vote-panel";
 import { RevealPanel } from "./reveal-panel";
 import type { BattleStartResponse, BattleVoteResponse } from "@/lib/types";
 
-export function BattleArena() {
+interface BattleArenaProps {
+  initialCategory?: string;
+}
+
+export function BattleArena({ initialCategory }: BattleArenaProps) {
   const store = useBattleStore();
   const startTimeRef = useRef<number>(0);
   const voteLoadingRef = useRef<boolean>(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  // Initialize category from URL on mount (runs once)
+  useEffect(() => {
+    if (initialCategory && getCategoryById(initialCategory)) {
+      store.setCategory(initialCategory);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only on mount
+  }, []);
+
+  // URL sync: update ?cat param when category changes
+  const updateCategoryUrl = useCallback((categoryId: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (categoryId === DEFAULT_CATEGORY_ID) {
+      params.delete("cat"); // Clean URL for default
+    } else {
+      params.set("cat", categoryId);
+    }
+    const query = params.toString();
+    router.replace(`${pathname}${query ? `?${query}` : ""}`, { scroll: false });
+  }, [searchParams, router, pathname]);
+
+  useEffect(() => {
+    updateCategoryUrl(store.category);
+  }, [store.category, updateCategoryUrl]);
 
   // -- Dual useCompletion hooks (RESEARCH.md Pattern 2) --
   // Each hook manages one stream independently (D-04, BATTLE-02)
@@ -61,7 +97,11 @@ export function BattleArena() {
       const res = await fetch("/api/battle/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({
+          question,
+          category: store.category,
+          systemPrompt: store.systemPrompt,
+        }),
       });
 
       if (!res.ok) {
@@ -163,11 +203,17 @@ export function BattleArena() {
         <p className="text-sm text-muted-foreground">AI 블라인드 배틀</p>
       </header>
 
+      {/* Category Selector (Phase 03) */}
+      <CategorySelector disabled={!isIdle} />
+
+      {/* System Prompt Editor (Phase 03) -- hidden when not idle */}
+      <SystemPromptEditor disabled={!isIdle} />
+
       {/* Battle Input (visible in idle state, disabled during streaming) */}
       {(isIdle || isStreaming) && (
         <BattleInput
           onSubmit={handleStartBattle}
-          disabled={isStreaming}
+          disabled={isStreaming || store.systemPrompt.length > 500 || store.systemPrompt.length === 0}
           loading={isStreaming}
         />
       )}
@@ -230,6 +276,7 @@ export function BattleArena() {
       {isRevealed && revealData && (
         <RevealPanel
           revealData={revealData}
+          category={store.category}
           onNewBattle={handleNewBattle}
         />
       )}

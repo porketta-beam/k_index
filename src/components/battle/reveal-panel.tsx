@@ -3,19 +3,26 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { WinRateBar } from "./win-rate-bar";
+import { getCategoryById } from "@/lib/categories";
 import type { BattleVoteResponse } from "@/lib/types";
 
 interface RevealPanelProps {
   revealData: BattleVoteResponse;
+  category: string;
   onNewBattle: () => void;
 }
 
-export function RevealPanel({ revealData, onNewBattle }: RevealPanelProps) {
+export function RevealPanel({ revealData, category, onNewBattle }: RevealPanelProps) {
+  const categoryLabel = getCategoryById(category)?.label ?? "일반";
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-3 duration-400">
       <Separator />
 
       <div className="space-y-4">
+        <h3 className="text-sm font-medium text-muted-foreground">
+          {categoryLabel} 카테고리 승률
+        </h3>
         <WinRateBar
           modelName={revealData.modelA.displayName}
           wins={revealData.winRates.modelA.wins}
