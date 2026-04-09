@@ -35,6 +35,9 @@ interface BattleState {
   // Season state (Phase 04)
   seasonEnded: boolean;
   seasonNumber: number | null;
+  // Mobile state (Phase 05)
+  mobileActiveCard: 0 | 1;
+  inputText: string;
 
   // Actions
   startBattle: (question: string, token: string) => void;
@@ -54,6 +57,9 @@ interface BattleState {
   resetPrompt: () => void;
   // Season actions (Phase 04)
   setSeasonEnded: (seasonNumber: number | null) => void;
+  // Mobile actions (Phase 05)
+  setMobileActiveCard: (index: 0 | 1) => void;
+  setInputText: (text: string) => void;
 }
 
 const initialState = {
@@ -75,6 +81,9 @@ const initialState = {
   // Season state (Phase 04)
   seasonEnded: false,
   seasonNumber: null as number | null,
+  // Mobile state (Phase 05)
+  mobileActiveCard: 0 as 0 | 1,
+  inputText: "",
 };
 
 export const useBattleStore = create<BattleState>((set, get) => ({
@@ -92,6 +101,7 @@ export const useBattleStore = create<BattleState>((set, get) => ({
       winner: null,
       revealData: null,
       errorMessage: null,
+      inputText: "",  // Clear input after submission
     }),
 
   // RESEARCH.md Pitfall 2: Race condition prevention
@@ -199,4 +209,9 @@ export const useBattleStore = create<BattleState>((set, get) => ({
 
   setSeasonEnded: (seasonNumber: number | null) =>
     set({ seasonEnded: true, seasonNumber }),
+
+  // -- Mobile actions (Phase 05) --
+
+  setMobileActiveCard: (index: 0 | 1) => set({ mobileActiveCard: index }),
+  setInputText: (text: string) => set({ inputText: text }),
 }));
