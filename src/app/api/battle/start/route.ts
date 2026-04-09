@@ -37,6 +37,7 @@ export async function POST(req: Request) {
       pA: positionA, // D-03, BATTLE-06: randomized position stored in token
       cat: category,      // Phase 3: category ID from validated request
       sp: systemPrompt,   // Phase 3: system prompt from validated request
+      sId: "",            // Phase 4: season_id placeholder — wired in Plan 02
       ts: Date.now(),
     });
 
