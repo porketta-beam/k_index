@@ -16,6 +16,7 @@
 - [x] API 기반 AI 모델 호출 — Validated in Phase 1: Foundation & AI Integration
 - [x] 블라인드 배틀: 질문 입력 → 두 AI 익명 응답 → 투표 → 모델 공개 — Validated in Phase 2: Core Battle Loop
 - [x] 로그인 없이 바로 배틀 가능 — Validated in Phase 2: Core Battle Loop
+- [x] 카테고리별 평가 (5 프리셋: 일반, 과제 도움, 자기소개서, 고민 상담, 창작) — Validated in Phase 3: Category System
 
 ### Active
 
@@ -26,7 +27,7 @@
 
 - 회원가입/로그인 — v1에서는 불필요, 추후 추가 예정
 - ELO 리더보드/랭킹 — v1은 비교 기능에 집중, 데이터 축적 후 추가
-- 카테고리별 평가 (과제/자소서/고민상담) — v2에서 카테고리 분리 예정
+- ~~카테고리별 평가~~ — Implemented in Phase 3 (moved from Out of Scope to Validated)
 - 투표 결과 통계 페이지 — v2에서 추가
 - 한국산 AI 모델 (HyperCLOVA X, EXAONE 등) — 업체 협의 후 추가
 - OAuth/소셜 로그인 — v2 로그인 기능 추가 시 검토
@@ -74,4 +75,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-09 after Phase 2 completion*
+*Last updated: 2026-04-09 after Phase 3 completion*
