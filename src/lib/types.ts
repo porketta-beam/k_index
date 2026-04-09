@@ -22,6 +22,7 @@ export interface Battle {
   response_b: string | null;
   position_a: "left" | "right";
   category: string;
+  season_id: string | null;
   status: BattleStatus;
   created_at: string;
   completed_at: string | null;
@@ -48,6 +49,7 @@ export interface BattleSession {
   pA: "left" | "right"; // randomized A/B position assignment (D-03, BATTLE-06)
   cat: string;       // category ID (e.g., "general", "homework") — Phase 3
   sp: string;        // system prompt text — Phase 3
+  sId: string;       // Phase 4: season_id threaded from gate to vote
   ts: number;        // creation timestamp (Date.now())
 }
 
