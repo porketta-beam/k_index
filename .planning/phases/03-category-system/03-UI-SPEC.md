@@ -75,7 +75,7 @@ Inherited from Phase 02. No changes to the scale.
 
 Notes:
 - System prompt textarea uses 14px (Label size) to visually distinguish it from the main question input at 16px
-- Category names use 14px label size with 500 (medium) weight inside toggle items for legibility at compact size
+- Category names use 14px label size. Selected toggle items use 700 (bold) weight; unselected toggle items use 400 (regular) weight. This provides a clear legibility distinction using only the two declared weights, complementing the `--primary` background fill that already communicates selection state.
 - `word-break: keep-all` remains on all body text (inherited from Phase 02 globals.css)
 
 ---
@@ -150,7 +150,7 @@ These are the categories defined for v1. Each has an emoji icon, Korean label, a
 
 ### Category Selection Integration
 
-The category selector and system prompt editor insert into the existing battle page between the header and the battle input. The overall page structure becomes:
+The category selector and system prompt editor insert into the existing battle page between the header and the battle input. The primary visual anchor in idle state remains the BattleInput + "배틀 시작" CTA -- the CategorySelector sits above as a lightweight precondition, not a competing focal point. The overall page structure becomes:
 
 ```
 +--------------------------------------------------+
@@ -189,8 +189,8 @@ The category selector and system prompt editor insert into the existing battle p
 - Horizontal scrollable row on tablet (768px-1023px) with scroll indicators
 - 2x3 grid on mobile (< 768px) for touch-friendly targets
 - Each toggle item: emoji + Korean label, 44px minimum height
-- Selected item: `--primary` background, `--primary-foreground` text, 2px primary border
-- Unselected items: `--background` background, `--foreground` text, 1px `--border` border
+- Selected item: `--primary` background, `--primary-foreground` text, 2px primary border, 700 (bold) weight
+- Unselected items: `--background` background, `--foreground` text, 1px `--border` border, 400 (regular) weight
 - Hover (unselected): `--muted` background
 
 ### SystemPromptEditor Layout (expanded)
@@ -232,8 +232,9 @@ The category selector and system prompt editor insert into the existing battle p
 ```
 [idle]
   |-- user selects category --> category updates, system prompt updates
+  |     (if prompt was modified: inline warning before switching, see below)
   |-- user expands prompt editor --> shows current prompt
-  |-- user edits prompt --> custom prompt stored in state
+  |-- user edits prompt --> custom prompt stored per-category in local state
   |-- user collapses prompt editor --> edits preserved
   |-- user submits question --> [streaming] (with selected category + prompt)
 
@@ -250,13 +251,15 @@ The category selector and system prompt editor insert into the existing battle p
 
 #### 1. Idle State (category selection active)
 
+- **Focal point:** BattleInput textarea and "배틀 시작" CTA remain the primary visual anchor, consistent with Phase 02. CategorySelector is a lightweight precondition above the input, not a competing focal point.
 - **CategorySelector visible:** All toggle items enabled, one selected (default: "general")
 - **SystemPromptEditor visible:** Collapsed by default, expandable
 - **BattleInput visible:** Same as Phase 02 idle state
 - When user selects a different category:
+  - If `isPromptModified` is true for the current category, an inline warning appears directly below the CategorySelector: "수정한 프롬프트가 있습니다. 카테고리를 변경하시겠습니까?" with two inline text buttons: "변경" (confirm switch, muted style) and "취소" (cancel, returns to current category). The warning uses 14px label size, `--destructive` text color, and 200ms fade-in. If the user confirms, the switch proceeds and the custom prompt for the previous category is discarded. If cancelled, the category selection reverts and no state changes.
+  - If `isPromptModified` is false, the switch proceeds immediately with no warning.
   - Toggle item transitions: 200ms ease-out background color change
   - System prompt textarea updates to new category's default prompt
-  - If user had a custom edit, it is LOST when switching categories (prompt resets to new category default)
   - Sonner toast NOT shown for category switch (too frequent, would be annoying)
 - When user edits the system prompt:
   - "기본값 복원" button fades in (200ms)
@@ -316,6 +319,9 @@ All copy in Korean with formal polite speech. Inherits Phase 02 copy; additions 
 | Prompt placeholder | 이 카테고리의 시스템 프롬프트를 수정할 수 있습니다 | You can edit this category's system prompt |
 | Prompt too long validation | 시스템 프롬프트는 500자 이내로 입력해주세요 | Please keep the system prompt under 500 characters |
 | Prompt empty validation | 시스템 프롬프트를 입력해주세요 | Please enter a system prompt |
+| Category switch warning | 수정한 프롬프트가 있습니다. 카테고리를 변경하시겠습니까? | You have an edited prompt. Switch categories? |
+| Category switch confirm | 변경 | Switch |
+| Category switch cancel | 취소 | Cancel |
 | Win rate category label | {카테고리명} 카테고리 승률 | {category} Category Win Rates |
 
 ### Inherited from Phase 02 (unchanged)
@@ -347,6 +353,8 @@ All copy in Korean with formal polite speech. Inherits Phase 02 copy; additions 
 | Chevron icon rotation | Rotate 0deg to 180deg on expand, reverse on collapse | 200ms | ease-out |
 | "Modified" badge appear | Fade in + scale 0.9 to 1.0 | 200ms | ease-out |
 | "Restore default" button appear | Fade in | 200ms | ease-out |
+| Category switch warning appear | Fade in | 200ms | ease-out |
+| Category switch warning dismiss | Fade out | 150ms | ease-in |
 
 Inherited from Phase 02 (all battle flow animations unchanged).
 
@@ -363,6 +371,7 @@ Inherited from Phase 02, with Phase 03 additions:
 | Collapsible keyboard | Enter/Space on trigger toggles expanded state |
 | Collapsible ARIA | `aria-expanded` on trigger, `aria-controls` pointing to content panel |
 | Prompt textarea label | `aria-label="시스템 프롬프트 편집"` on the system prompt textarea |
+| Category switch warning | `role="alert"` on the inline warning so screen readers announce it immediately when it appears |
 | Tab order | Category toggles -> prompt trigger -> (if expanded) prompt textarea -> restore default -> question textarea -> submit button |
 | Focus indicators | 2px primary ring with 2px offset (inherited from Phase 02) |
 | Color contrast | All toggle states meet WCAG 2.1 AA (4.5:1 for label text) |
@@ -379,12 +388,17 @@ Phase 03 extends the existing battle store with category state:
 category: string;             // Selected category ID (default: "general")
 systemPrompt: string;         // Current system prompt (default from category)
 isPromptModified: boolean;    // Whether user edited the default prompt
+pendingCategory: string | null; // Category awaiting confirmation when prompt is modified
 
 // New actions
 setCategory: (categoryId: string) => void;  // Sets category, resets prompt to default
+confirmCategorySwitch: () => void;           // Confirms pending category switch, discards custom prompt
+cancelCategorySwitch: () => void;            // Cancels pending category switch, reverts to current
 setSystemPrompt: (prompt: string) => void;  // Sets custom prompt, marks as modified
 resetPrompt: () => void;                     // Resets prompt to selected category's default
 ```
+
+The `setCategory` action checks `isPromptModified` before switching. If true, it sets `pendingCategory` instead of switching immediately, triggering the inline warning UI. `confirmCategorySwitch` applies the pending category and resets the prompt. `cancelCategorySwitch` clears `pendingCategory` without changing state.
 
 The `startBattle` action must now include `category` and `systemPrompt` in the battle start request. The `reset` action preserves the selected `category` but resets `systemPrompt` to the category default and clears `isPromptModified`.
 
