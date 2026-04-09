@@ -47,13 +47,14 @@ Plans:
   3. User can vote A wins or B wins, and voting is disabled until both responses finish streaming
   4. After voting, the actual model names (GPT / Claude / Gemini) are revealed for each response
   5. After voting, per-category win rates for each revealed model are displayed alongside the result
-**Plans**: TBD
+**Plans:** 4 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md — Server battle infrastructure: types, HMAC session tokens, model pairing, 3 API routes, win rate SQL
+- [ ] 02-02-PLAN.md — Client foundation: shadcn/ui init, Zustand + sonner install, Pretendard font, CSS design system
+- [ ] 02-03-PLAN.md — Zustand battle store + 6 battle UI components (input, response card, vote panel, reveal panel, etc.)
+- [ ] 02-04-PLAN.md — Battle arena orchestrator wiring dual streams + page.tsx + end-to-end verification checkpoint
 
 ### Phase 3: Category System
 **Goal**: Users can select a battle category (homework, cover letter, counseling, etc.) that shapes the AI's behavior through system prompts, and can customize those prompts
@@ -108,7 +109,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & AI Integration | 0/3 | Planning complete | - |
-| 2. Core Battle Loop | 0/3 | Not started | - |
+| 2. Core Battle Loop | 0/4 | Planning complete | - |
 | 3. Category System | 0/1 | Not started | - |
 | 4. Season System & Global State | 0/2 | Not started | - |
 | 5. Korean UI & Responsive Polish | 0/2 | Not started | - |
