@@ -85,3 +85,80 @@ export async function getBattleById(
   }
   return data as Battle;
 }
+
+/**
+ * Insert battle + vote in one operation (D-07: save at vote time only).
+ *
+ * ACCEPTED RISK: Uses sequential inserts because Supabase JS client does not
+ * support transactions. If the vote insert fails after the battle insert
+ * succeeds, an orphaned completed battle record is left in the DB. This is
+ * acceptable for v1 because: (1) vote insert failures are rare (schema is
+ * simple), (2) orphaned battles do not affect win rate computation (the RPC
+ * function joins battles+votes, so battles without votes are excluded),
+ * (3) adding a PostgreSQL RPC for atomic write is a Phase 3+ optimization
+ * if orphan rate becomes measurable.
+ */
+export async function insertBattleWithVote(data: {
+  question: string;
+  modelA: string;
+  modelB: string;
+  positionA: "left" | "right";
+  responseA: string;
+  responseB: string;
+  winner: "a" | "b";
+  category: string;
+  durationA: number;
+  durationB: number;
+}): Promise<{ battle: Battle; vote: Vote }> {
+  // Insert battle as completed
+  const { data: battle, error: battleError } = await supabase
+    .from("battles")
+    .insert({
+      question: data.question,
+      model_a: data.modelA,
+      model_b: data.modelB,
+      response_a: data.responseA,
+      response_b: data.responseB,
+      position_a: data.positionA, // D-03, BATTLE-06: randomized position from session token
+      category: data.category,
+      status: "completed" as BattleStatus,
+      completed_at: new Date().toISOString(),
+    })
+    .select()
+    .single();
+
+  if (battleError) throw new Error(`Failed to insert battle: ${battleError.message}`);
+
+  // Insert vote linked to the battle
+  const { data: vote, error: voteError } = await supabase
+    .from("votes")
+    .insert({
+      battle_id: (battle as Battle).id,
+      winner: data.winner,
+    })
+    .select()
+    .single();
+
+  if (voteError) throw new Error(`Failed to insert vote: ${voteError.message}`);
+
+  return { battle: battle as Battle, vote: vote as Vote };
+}
+
+/**
+ * Get win rates per model for a given category (D-09, BATTLE-05).
+ * Calls the PostgreSQL RPC function get_model_win_rates.
+ */
+export async function getModelWinRates(
+  category: string,
+): Promise<Array<{ model_id: string; wins: number; total: number }>> {
+  const { data, error } = await supabase.rpc("get_model_win_rates", {
+    category_filter: category,
+  });
+
+  if (error) {
+    console.error("[getModelWinRates] RPC error:", error);
+    return []; // Graceful fallback: show 0% win rates rather than crash
+  }
+
+  return (data ?? []) as Array<{ model_id: string; wins: number; total: number }>;
+}
