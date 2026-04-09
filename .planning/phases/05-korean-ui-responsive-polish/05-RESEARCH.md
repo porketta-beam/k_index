@@ -269,7 +269,7 @@ function useActiveCard(containerRef: React.RefObject<HTMLDivElement | null>) {
 | Mobile card swipe | Custom touch/drag handler | CSS `scroll-snap-type: x mandatory` via Tailwind `snap-x snap-mandatory` | Native browser behavior, perfect momentum, zero JS |
 | Active card detection | Scroll position math | `IntersectionObserver` with 0.5 threshold | No layout thrashing, accurate on all browsers |
 | Scrollbar hiding | Custom overflow wrapper component | 3-line CSS utility class `.scrollbar-hide` | Simpler, applies via Tailwind class |
-| Responsive breakpoint logic | `window.innerWidth` checks | Tailwind responsive prefixes (`md:grid-cols-2`) | SSR-safe, no hydration mismatch |
+| Responsive breakpoint logic | `window.innerWidth` checks | Tailwind responsive prefixes (`md:`) | SSR-safe, no hydration mismatch |
 | Viewport height on mobile | `100vh` | Tailwind `min-h-dvh` | Handles mobile browser chrome correctly |
 
 **Key insight:** This phase is almost entirely CSS layout work. The only new JavaScript is the IntersectionObserver hook for dot indicators and the Zustand state addition for mobile active card. Everything else is restructuring existing components with Tailwind classes.
@@ -454,22 +454,25 @@ Phase 5 D-06 introduces a mixed tone rule: casual (반말) for interactive eleme
 | A3 | Vote prompt heading "어떤 응답이 더 좋았나요?" should stay formal vs. become casual | Copywriting Changes | Tone mismatch with casual vote buttons if kept formal. But "어떤 응답이 더 좋아?" may feel too informal for a heading. |
 | A4 | Category selector should remain as toggle group on mobile (not dropdown) | Common Pitfalls, Pitfall 6 | May take too much vertical space on 375px. Horizontal scroll is the fallback. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Category selector mobile layout**
    - What we know: 5 categories with emoji + Korean text, currently `flex-wrap gap-2`, each button is 44px tall
    - What's unclear: Whether they fit in a single row on 375px or need horizontal scroll / dropdown
    - Recommendation: Implement as horizontally scrollable row with overflow-x-auto on mobile. Can test and adjust during implementation.
+   - RESOLVED: Horizontally scrollable row with `flex-nowrap overflow-x-auto scrollbar-hide` on mobile, `md:flex-wrap` on desktop. Each ToggleGroupItem gets `flex-shrink-0`. Implemented in Plan 05-02, Task 1 (CategorySelector update).
 
 2. **BattleInput state management during layout move**
    - What we know: Current BattleInput uses local useState for question text. Moving it to sticky footer could cause unmount.
    - What's unclear: Whether React will preserve the component across the layout change
    - Recommendation: Lift the question input state to Zustand (add `inputText` to store) or keep BattleInput in a stable tree position. Simplest fix: ensure the component does not conditionally render in different tree positions.
+   - RESOLVED: Lifted question input state to Zustand store (`inputText` + `setInputText` fields). Plan 05-01 Task 1 extends the store; Plan 05-02 Task 1 rewires BattleInput to use `useBattleStore()` instead of local `useState`. This makes the input value survive tree position changes.
 
 3. **SystemPromptEditor placement with bottom input**
    - What we know: Currently positioned below CategorySelector, above BattleInput. With BattleInput moving to bottom, the collapsible prompt editor needs a new home.
    - What's unclear: Where it fits best in the new layout
    - Recommendation: Keep it in the main content area below CategorySelector. It's only visible in idle state and collapses to one line, so it doesn't conflict with the bottom input.
+   - RESOLVED: Kept in main content area below CategorySelector, rendered only in idle state. BattleInput moved to sticky footer, so no conflict. Implemented in Plan 05-02, Task 2 (BattleArena layout restructure).
 
 ## Validation Architecture
 
