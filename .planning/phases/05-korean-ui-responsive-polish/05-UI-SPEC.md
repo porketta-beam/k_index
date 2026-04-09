@@ -54,28 +54,32 @@ Carried forward from Phase 02. No changes.
 | 3xl | 64px | Not used in Phase 05 |
 
 Exceptions:
-- Vote buttons: 44px minimum touch target height (accessibility, unchanged)
-- Category toggle buttons: 44px minimum touch target height (accessibility, unchanged)
-- Sticky bottom input footer: 12px vertical padding (py-3) for compact feel
-- Mobile response card minimum height: 300px (prevents scroll-snap instability during streaming)
+
+| Exception | Value | Tailwind Class | Justification |
+|-----------|-------|---------------|---------------|
+| Vote button touch target | 44px | `min-h-[44px]` | WCAG 2.1 minimum touch target (accessibility, unchanged from Phase 02) |
+| Category toggle touch target | 44px | `min-h-[44px]` | WCAG 2.1 minimum touch target (accessibility, unchanged from Phase 02) |
+| Sticky footer vertical padding | 12px | `py-3` | Compact feel for bottom-pinned input footer; 16px (md) wastes vertical space on mobile, 8px (sm) feels cramped with border-t. 12px balances density and breathing room. |
+| Dot indicator margin-top | 12px | `mt-3` | Visual separation between swipe container and dot indicators; 8px (sm) places dots too close to card edge, 16px (md) creates excessive gap for a 2-dot element. 12px is optically balanced. |
+| Mobile response card min height | 300px | `min-h-[300px]` | Prevents scroll-snap instability during streaming (content height changes cause snap recalculation) |
 
 ---
 
 ## Typography
 
-Carried forward from Phase 02. No changes to sizes or weights.
+Carried forward from Phase 02. No changes to sizes. Weight count reduced from three to two.
 
 | Role | Size | Weight | Line Height | Font Stack | Usage |
 |------|------|--------|-------------|------------|-------|
 | Body | 16px | 400 (regular) | 1.6 | Pretendard Variable | AI response text, question text |
 | Label | 14px | 400 (regular) | 1.4 | Pretendard Variable | "Model A/B" labels, status text, metadata, category label, dot indicator label |
 | Heading | 24px | 700 (bold) | 1.3 | Pretendard Variable | Page title ("K-Index") |
-| Subheading | 20px | 600 (semibold) | 1.3 | Pretendard Variable | Empty state heading, vote prompt heading |
+| Subheading | 20px | 700 (bold) | 1.3 | Pretendard Variable | Empty state heading, vote prompt heading |
 | Mono | 14px | 400 (regular) | 1.5 | Geist Mono | Win rate percentages, duration counters |
 
 Notes:
-- Phase 05 adds Subheading (20px/600) for empty state hero and vote prompt. Phase 02 used 24px/700 for these; 20px/600 is more appropriate for secondary headings in the arena.ai-inspired layout.
-- Font weights used: 400 (regular), 600 (semibold), 700 (bold). Three weights total.
+- Phase 05 adds Subheading (20px/700) for empty state hero and vote prompt. Phase 02 used 24px/700 for these; 20px/700 is more appropriate for secondary headings in the arena.ai-inspired layout. Bold weight is shared with Heading to keep the weight count at 2.
+- Font weights used: 400 (regular), 700 (bold). Two weights total.
 - `word-break: keep-all` remains on body (already in globals.css).
 
 ---
@@ -281,7 +285,7 @@ Note: D-03 specifies only one breakpoint at `md` (768px). Tablet portrait is tre
   - CategorySelector: horizontally scrollable on mobile, flex-wrap on desktop
   - SystemPromptEditor: collapsible below category (unchanged behavior)
   - Empty state hero centered in remaining space:
-    - Heading: "첫 번째 배틀을 시작해보세요!" (20px semibold)
+    - Heading: "첫 번째 배틀을 시작해보세요!" (20px bold)
     - Body: "한국어로 질문을 입력하면 두 AI가 경쟁합니다. 더 좋은 답변을 선택해주세요." (16px muted)
 - **Input footer:** Sticky bottom, visible, enabled
   - Textarea: single line height on mobile (min-h-[56px]), expandable. Placeholder: "한국어로 질문을 입력하세요"
@@ -301,7 +305,7 @@ Note: D-03 specifies only one breakpoint at `md` (768px). Tablet portrait is tre
     - Streaming indicator: pulsing blue dot at end of text (unchanged)
     - Completed card: "완료" label + duration in mono
   - VotePanel: visible but disabled. Buttons at 50% opacity, cursor-not-allowed.
-    - Heading: "어떤 응답이 더 좋았나요?" (20px semibold)
+    - Heading: "어떤 응답이 더 좋았나요?" (20px bold)
     - Wait message: "두 응답이 모두 완료될 때까지 기다려주세요" (14px muted)
 - **Input footer:** Sticky bottom, visible, disabled (textarea grayed, button shows spinner + "응답 생성 중...")
 
@@ -471,7 +475,7 @@ Use `IntersectionObserver` with `{ root: scrollContainer, threshold: 0.5 }`. Whe
 - Active: `bg-foreground` (solid dark)
 - Inactive: `bg-muted-foreground/30` (faint gray)
 - Gap between dots: 8px (`gap-2`)
-- Margin top from swipe container: 12px (`mt-3`)
+- Margin top from swipe container: 12px (`mt-3`) -- see Spacing Scale exceptions table
 - Centered horizontally (`flex justify-center`)
 - Color transition: 150ms ease-out
 
@@ -509,7 +513,7 @@ Per D-12: input moves from inline position to sticky bottom footer.
 - Z-index: `z-10` (same as sticky header)
 - Background: `bg-background/95 backdrop-blur-sm` (slight transparency for depth)
 - Border: `border-t border-border` (top border only)
-- Padding: `px-4 py-3`
+- Padding: `px-4 py-3` -- 12px vertical padding, see Spacing Scale exceptions table
 - Content max-width: `max-w-[1120px] mx-auto` (matches main content)
 
 ### Visibility Rules
