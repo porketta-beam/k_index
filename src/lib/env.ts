@@ -7,6 +7,7 @@ const envSchema = z.object({
     1,
     "GOOGLE_GENERATIVE_AI_API_KEY is required",
   ),
+  GROQ_API_KEY: z.string().min(1, "GROQ_API_KEY is required"),
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(
     "NEXT_PUBLIC_SUPABASE_URL must be a valid URL",
   ),
