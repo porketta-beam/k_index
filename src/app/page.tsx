@@ -1,8 +1,18 @@
-export default function Home() {
+import { Suspense } from "react";
+import { BattleArena } from "@/components/battle/battle-arena";
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ cat?: string }>;
+}) {
+  const { cat } = await searchParams;
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-bold">K-Index</h1>
-      <p className="text-gray-500">AI Battle Arena - Coming Soon</p>
-    </main>
+    <div className="min-h-dvh flex flex-col">
+      <Suspense fallback={null}>
+        <BattleArena initialCategory={cat} />
+      </Suspense>
+    </div>
   );
 }
